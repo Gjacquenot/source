@@ -28,6 +28,7 @@ install:
   - "%PYTHON%\\python.exe -m pip install numpy"
 
 build: off
+  - "build.cmd %PYTHON%\\python.exe setup.py build_ext --inplace"
 
 test_script:
   # Put your test command here.
@@ -37,7 +38,7 @@ test_script:
   # Note that you must use the environment variable %PYTHON% to refer to
   # the interpreter you're using - Appveyor does not do anything special
   # to put the Python version you want to use on PATH.
-  - "build.cmd %PYTHON%\\python.exe setup.py test"
+  - "%PYTHON%\\python.exe -m unittest"
 
 after_test:
   # This step builds your wheels.
