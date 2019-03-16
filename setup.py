@@ -6,12 +6,17 @@ import os.path as path
 import multiprocessing
 
 use_cython = True
+disable_cython_parallel_compilation = False
 force = False
 profile = False
 
 if "--skip-cython" in sys.argv:
     use_cython = False
     del sys.argv[sys.argv.index("--skip-cython")]
+
+if "--disable-cython-parallel-compilation" in sys.argv:
+    disable_cython_parallel_compilation = True
+    del sys.argv[sys.argv.index("--disable-cython-parallel-compilation")]
 
 if "--force" in sys.argv:
     force = True
@@ -48,7 +53,11 @@ if use_cython:
         cython_directives["profile"] = True
 
     # generate .c files from .pyx
-    extensions = cythonize(extensions, nthreads=multiprocessing.cpu_count(), force=force, compiler_directives=cython_directives)
+    if disable_cython_parallel_compilation:
+        nthreads = 0
+    else:
+        nthreads = multiprocessing.cpu_count()
+    extensions = cythonize(extensions, nthreads=nthreads, force=force, compiler_directives=cython_directives)
 
 else:
 
