@@ -20,9 +20,9 @@ environment:
     #   DISTUTILS_USE_SDK: "1"
     # - PYTHON: "C:\\Python35-x64"
     # - PYTHON: "C:\\Python36-x64"
-    - PYTHON: "C:\\Python37-x64"
-      DISTUTILS_USE_SDK: "1"
     # - PYTHON: "C:\\Python37-x64"
+    #  DISTUTILS_USE_SDK: "1"
+    - PYTHON: "C:\\Python37-x64"
 
 install:
   - "%PYTHON%\\python.exe -m pip install -U pip"
