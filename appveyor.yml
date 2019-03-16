@@ -27,7 +27,7 @@ install:
   - "%PYTHON%\\python.exe -m pip install cython"
   - "%PYTHON%\\python.exe -m pip install numpy"
 
-build: off
+build:
   - "build.cmd %PYTHON%\\python.exe setup.py build_ext --inplace"
 
 test_script:
