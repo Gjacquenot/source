@@ -43,6 +43,10 @@ cdef double srgb_transfer_function(double v)
 
 cpdef (double, double, double) ciexyz_to_srgb(double x, double y, double z)
 
+cpdef double ciexyz_to_srgb_r(double x, double y, double z)
+cpdef double ciexyz_to_srgb_g(double x, double y, double z)
+cpdef double ciexyz_to_srgb_b(double x, double y, double z)
+
 cdef double srgb_transfer_function_inverse(double v)
 
 cpdef (double, double, double) srgb_to_ciexyz(double r, double g, double b)

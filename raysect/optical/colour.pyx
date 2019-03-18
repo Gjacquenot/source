@@ -232,6 +232,88 @@ cdef double srgb_transfer_function(double v):
         return 1.055 * v**0.4166666666666667 - 0.055
 
 
+cpdef double ciexyz_to_srgb_r(double x, double y, double z):
+    """
+    Convert CIE XYZ values to sRGB colour space (only red).
+
+    x, y, z in range [0, 1]
+    r range [0, 1]
+
+    :param float x: tristimulus X
+    :rtype: double
+    """
+
+    cdef:
+        double r
+
+    # convert from CIE XYZ (D65) to sRGB (linear)
+    r =  3.2404542 * x - 1.5371385 * y - 0.4985314 * z
+
+    # apply sRGB transfer function
+    r = srgb_transfer_function(r)
+
+    # restrict to [0, 1]
+    r = clamp(r, 0, 1)
+
+    return r
+
+
+cpdef double ciexyz_to_srgb_g(double x, double y, double z):
+    """
+    Convert CIE XYZ values to sRGB colour space (only green).
+
+    x, y, z in range [0, 1]
+    g range [0, 1]
+
+    :param float x: tristimulus X
+    :param float y: tristimulus y
+    :param float z: tristimulus Z
+    :rtype: double
+    """
+
+    cdef:
+        double g
+
+    # convert from CIE XYZ (D65) to sRGB (linear)
+    g = -0.9692660 * x + 1.8760108 * y + 0.0415560 * z
+
+    # apply sRGB transfer function
+    g = srgb_transfer_function(g)
+
+    # restrict to [0, 1]
+    g = clamp(g, 0, 1)
+
+    return g
+
+
+cpdef double ciexyz_to_srgb_b(double x, double y, double z):
+    """
+    Convert CIE XYZ values to sRGB colour space (only blue).
+
+    x, y, z in range [0, 1]
+    b range [0, 1]
+
+    :param float x: tristimulus X
+    :param float y: tristimulus y
+    :param float z: tristimulus Z
+    :rtype: double
+    """
+
+    cdef:
+        double b
+
+    # convert from CIE XYZ (D65) to sRGB (linear)
+    b =  0.0556434 * x - 0.2040259 * y + 1.0572252 * z
+
+    # apply sRGB transfer function
+    b = srgb_transfer_function(b)
+
+    # restrict to [0, 1]
+    b = clamp(b, 0, 1)
+
+    return b
+
+
 cpdef (double, double, double) ciexyz_to_srgb(double x, double y, double z):
     """
     Convert CIE XYZ values to sRGB colour space.
