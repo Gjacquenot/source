@@ -36,6 +36,7 @@ cimport numpy as np
 from raysect.optical.observer.base cimport PixelProcessor, Pipeline2D
 from raysect.core.math cimport StatsArray3D, StatsArray1D
 from raysect.optical.colour cimport resample_ciexyz, spectrum_to_ciexyz
+from raysect.optical.colour cimport ciexyz_to_srgb
 from raysect.optical.colour cimport ciexyz_to_srgb_r, ciexyz_to_srgb_g, ciexyz_to_srgb_b
 from raysect.optical.spectrum cimport Spectrum
 
