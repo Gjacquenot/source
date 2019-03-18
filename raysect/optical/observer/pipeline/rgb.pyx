@@ -35,8 +35,8 @@ cimport cython
 cimport numpy as np
 from raysect.optical.observer.base cimport PixelProcessor, Pipeline2D
 from raysect.core.math cimport StatsArray3D, StatsArray1D
-from raysect.optical.colour cimport resample_ciexyz, spectrum_to_ciexyz, ciexyz_to_srgb
-
+from raysect.optical.colour cimport resample_ciexyz, spectrum_to_ciexyz
+from raysect.optical.colour cimport ciexyz_to_srgb_r, ciexyz_to_srgb_g, ciexyz_to_srgb_b
 from raysect.optical.spectrum cimport Spectrum
 
 
@@ -481,7 +481,6 @@ cdef class RGBPipeline2D(Pipeline2D):
             int nx, ny, ix, iy
             np.ndarray rgb_image
             double[:,:,::1] rgb_image_mv
-            (double, double, double) rgb_pixel
 
         nx = xyz_image_mv.shape[0]
         ny = xyz_image_mv.shape[1]
@@ -492,17 +491,18 @@ cdef class RGBPipeline2D(Pipeline2D):
         for ix in range(nx):
             for iy in range(ny):
 
-                rgb_pixel = ciexyz_to_srgb(
-                    xyz_image_mv[ix, iy, 0],
-                    xyz_image_mv[ix, iy, 1],
-                    xyz_image_mv[ix, iy, 2]
-                )
-
-                rgb_image_mv[ix, iy, 0] = rgb_pixel[0]
-                rgb_image_mv[ix, iy, 1] = rgb_pixel[1]
-                rgb_image_mv[ix, iy, 2] = rgb_pixel[2]
+                rgb_image_mv[ix, iy, 0] = ciexyz_to_srgb_r(xyz_image_mv[ix, iy, 0],
+                                                           xyz_image_mv[ix, iy, 1],
+                                                           xyz_image_mv[ix, iy, 2])
+                rgb_image_mv[ix, iy, 1] = ciexyz_to_srgb_g(xyz_image_mv[ix, iy, 0],
+                                                           xyz_image_mv[ix, iy, 1],
+                                                           xyz_image_mv[ix, iy, 2])
+                rgb_image_mv[ix, iy, 2] = ciexyz_to_srgb_b(xyz_image_mv[ix, iy, 0],
+                                                           xyz_image_mv[ix, iy, 1],
+                                                           xyz_image_mv[ix, iy, 2])
 
         return rgb_image
+
 
     cpdef object display(self):
         """
